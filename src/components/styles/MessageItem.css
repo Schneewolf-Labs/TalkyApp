@@ -1,6 +1,6 @@
 /* Ensure text content doesn't overflow but wraps */
 .message-text {
-  white-space: normal;
+  white-space: pre-line;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }

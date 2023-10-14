@@ -1,0 +1,10 @@
+.setting-name {
+	font-weight: bold;
+	text-transform: capitalize;
+	color: var(--ion-color-step-850, #262626);
+}
+
+/* Right-align input values */
+.setting-input {
+	text-align: right;
+}
