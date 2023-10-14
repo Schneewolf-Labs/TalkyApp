@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonList, IonItem } from '@ionic/react';
-import { Message } from '../types';
 import MessageItem from '../components/MessageItem';
+import MessageInput from '../components/MessageInput';
 import useWebSocket from '../hooks/useWebSocket';
 import './Home.css';
 
@@ -32,12 +32,12 @@ const Home: React.FC = () => {
           ))}
         </IonList>
 
-        <IonInput
-          value={input}
-          placeholder="Enter your message"
-          onIonChange={e => setInput(e.detail.value!)}
-        />
-        <IonButton expand="block" onClick={handleSendMessage}>Send</IonButton>
+        <MessageInput onSend={(messageText) => {
+          sendMessage({
+            author: 'TalkyApp',
+            text: messageText,
+          });
+        }} />
       </IonContent>
     </IonPage>
   );
