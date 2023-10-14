@@ -4,6 +4,7 @@ import { Message } from '../types';
 const useWebSocket = (url: string) => {
     const [ws, setWs] = useState<WebSocket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
+    const [isUserTyping, setIsUserTyping] = useState(false);
 
     useEffect(() => {
         const websocket = new WebSocket(url);
@@ -17,6 +18,10 @@ const useWebSocket = (url: string) => {
             switch (incomingMessage.event) {
                 case 'receive_message':
                     addMessage(incomingMessage.data);
+                    setIsUserTyping(false);
+                    break;
+                case 'receive_typing':
+                    setIsUserTyping(true);
                     break;
             }
         };
@@ -63,7 +68,8 @@ const useWebSocket = (url: string) => {
 
     return {
         messages,
-        sendMessage
+        sendMessage,
+        isUserTyping
     };
 };
 
