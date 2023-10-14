@@ -13,17 +13,11 @@ const useWebSocket = (url: string) => {
         };
 
         websocket.onmessage = (event) => {
-            const msg = JSON.parse(event.data);
-            const data: Message = {
-                author: msg.data.author,
-                text: msg.data.text,
-            };
-
-            switch (msg.event) {
+            const incomingMessage = JSON.parse(event.data);
+            switch (incomingMessage.event) {
                 case 'receive_message':
-                    setMessages((prevMessages) => [...prevMessages, data]);
+                    addMessage(incomingMessage.data);
                     break;
-                // ... other cases remain unchanged
             }
         };
 
@@ -35,12 +29,36 @@ const useWebSocket = (url: string) => {
     }, [url]);
 
     const sendMessage = (message: Message) => {
-        if (ws) {
+        if (ws && ws.readyState === WebSocket.OPEN && message.text) {
             ws.send(JSON.stringify({
                 event: 'send_message',
                 data: message,
             }));
+            // add message to local history
+            addMessage(message);
         }
+    };
+    
+
+    const addMessage = (newMessage: { author: string; text: string }) => {
+        setMessages(prevMessages => {
+            const lastMessage = prevMessages[prevMessages.length - 1];
+
+            // If the previous message and the new one are from the same author
+            if (lastMessage && lastMessage.author === newMessage.author) {
+                // Clone the last message and append the new text
+                const updatedMessage = {
+                    ...lastMessage,
+                    text: `${lastMessage.text}\n${newMessage.text}`
+                };
+
+                // Replace the last message with the updated one
+                return [...prevMessages.slice(0, -1), updatedMessage];
+            } else {
+                // If the author is different, just add the new message
+                return [...prevMessages, newMessage];
+            }
+        });
     };
 
     return {

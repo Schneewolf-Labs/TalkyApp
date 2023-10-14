@@ -1,0 +1,11 @@
+/* Ensure text content doesn't overflow but wraps */
+.message-text {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* If you have a fixed width or max-width on the item, ensure it doesn't cause overflow */
+.message-item {
+  overflow: hidden;
+}
