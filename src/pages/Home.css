@@ -1,0 +1,17 @@
+/* src/pages/Home.css */
+ion-list {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  ion-item {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --inner-padding-end: 10px;
+    --inner-padding-start: 10px;
+  }
+  
+  ion-input {
+    margin-top: 10px;
+  }
+  
