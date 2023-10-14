@@ -15,6 +15,11 @@ const useWebSocket = (url: string) => {
         let retries = 0;
         let reconnectionDelay = INITIAL_DELAY_MS;
 
+        if (ws) {
+            ws.close(1000, "URL changed, initiating new connection");
+            setWs(null);
+        }
+
         const connect = () => {
             // Close any existing connections
             if (ws) {
@@ -72,6 +77,7 @@ const useWebSocket = (url: string) => {
         };
 
         if (!connecting) {
+            setConnecting(true);
             connect();
         }
 
