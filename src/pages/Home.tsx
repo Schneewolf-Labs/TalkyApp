@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonList, IonItem } from '@ionic/react';
 import MessageItem from '../components/MessageItem';
 import MessageInput from '../components/MessageInput';
@@ -6,16 +6,13 @@ import useWebSocket from '../hooks/useWebSocket';
 import './Home.css';
 
 const Home: React.FC = () => {
-  const [input, setInput] = useState<string>('');
   const { messages, sendMessage } = useWebSocket('ws://127.0.0.1:3000/api');
-
-  const handleSendMessage = () => {
-    sendMessage({
-      author: 'TalkyApp',
-      text: input,
-    });
-    setInput('');
-  };
+  
+  // Handle scrolling on new messages
+  const lastMessageRef = useRef<HTMLIonItemElement | null>(null);
+  useEffect(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   // Render UI
   return (
@@ -28,7 +25,10 @@ const Home: React.FC = () => {
       <IonContent className="ion-padding">
         <IonList>
           {messages.map((message, idx) => (
-            <MessageItem key={idx} message={message} />
+            <MessageItem key={idx} 
+              message={message}
+              ref={idx === messages.length - 1 ? lastMessageRef : null}
+            />
           ))}
         </IonList>
 
