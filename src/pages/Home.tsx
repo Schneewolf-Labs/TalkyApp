@@ -19,11 +19,11 @@ const Home: React.FC = () => {
     websocket.onmessage = (event) => {
       const msg = event.data;
       const message = JSON.parse(msg);
-      const data = message.data.text;
+      const data = message.data;
 
       switch (message.event) {
         case 'receive_message':
-          setMessages((prevMessages) => [...prevMessages, data]);
+          setMessages((prevMessages) => [...prevMessages, data.text]);
           break;
         case 'receive_image':
           console.log('Image received');
