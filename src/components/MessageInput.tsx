@@ -4,9 +4,10 @@ import './styles/MessageInput.css';
 
 type MessageInputProps = {
   onSend: (message: string) => void;
+  connected: boolean;
 };
 
-const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
+const MessageInput: React.FC<MessageInputProps> = ({ connected, onSend }) => {
   const [input, setInput] = useState<string>('');
 
   const handleSendMessage = () => {
@@ -30,7 +31,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSend }) => {
         onIonChange={e => setInput(e.detail.value!)}
         onKeyDown={handleKeyDown}
       />
-      <IonButton expand="block" onClick={handleSendMessage}>Send</IonButton>
+      <IonButton disabled={!connected} expand="block" onClick={handleSendMessage}>Send</IonButton>
     </div>
   );
 };

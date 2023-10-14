@@ -12,7 +12,7 @@ const Home: React.FC = () => {
   const apiUrl = settings.find(setting => setting.name === 'apiUrl')?.value || 'ws://127.0.0.1:3000/api';
   const username = settings.find(setting => setting.name === 'username')?.value || 'TalkyApp';
 
-  const { messages, sendMessage, isUserTyping } = useWebSocket(apiUrl);
+  const { isConnected, messages, sendMessage, isUserTyping } = useWebSocket(apiUrl);
 
   // Handle scrolling on new messages
   const lastMessageRef = useRef<HTMLIonItemElement | null>(null);
@@ -20,12 +20,20 @@ const Home: React.FC = () => {
     lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Set title
+  let title = 'TalkyApp';
+  if (isConnected) {
+    title += ' - Connected';
+  } else {
+    title += ' - Disconnected';
+  }
+
   // Render UI
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>TalkyApp</IonTitle>
+          <IonTitle>{title}</IonTitle>
           <IonButtons slot="end">
             <IonButton routerLink="/settings">
               <IonIcon slot="icon-only" icon={settingsOutline} />
@@ -42,13 +50,13 @@ const Home: React.FC = () => {
             />
           ))}
           <IonItem>
-            {isUserTyping && (
+            {isConnected && isUserTyping && (
               <IonLabel>User is typing...</IonLabel>
             )}
           </IonItem>
         </IonList>
 
-        <MessageInput onSend={(messageText) => {
+        <MessageInput connected={isConnected} onSend={(messageText) => {
           sendMessage({
             author: username,
             text: messageText,
