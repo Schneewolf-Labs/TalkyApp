@@ -33,11 +33,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
       value: apiUrl, 
       setValue: (value: any) => { saveToLocalStorage('apiUrl', value); setApiUrl(value); } 
     },
-    { 
-      name: 'avatar', 
-      value: avatar, 
-      setValue: (value: any) => { saveToLocalStorage('avatar', value); setAvatar(value); } 
-    },
   ];
 
   const get = (name: string) => {
