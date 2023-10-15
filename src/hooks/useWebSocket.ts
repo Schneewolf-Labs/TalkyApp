@@ -3,6 +3,7 @@ import { Message } from '../types';
 
 const MAX_RETRIES = 5;
 const INITIAL_DELAY_MS = 1000; // start with 1 second delay
+let currentURL : string = '';
 
 const useWebSocket = (url: string) => {
     const [ws, setWs] = useState<WebSocket | null>(null);
@@ -12,29 +13,19 @@ const useWebSocket = (url: string) => {
     const [isUserTyping, setIsUserTyping] = useState(false);
 
     useEffect(() => {
-        let retries = 0;
-        let reconnectionDelay = INITIAL_DELAY_MS;
-
-        if (ws) {
-            ws.close(1000, "URL changed, initiating new connection");
-            setWs(null);
+        if (!url || url === currentURL) {
+            console.log('url is empty or the same as the previous one');
+            return;
         }
 
         const connect = () => {
-            // Close any existing connections
-            if (ws) {
-                ws.close(1000, "Initiating new connection");
-            }
-
             const websocket = new WebSocket(url);
+            currentURL = url;
 
             websocket.onopen = () => {
                 console.log('Connected to the WebSocket');
                 setIsConnected(true);
                 setConnecting(false);
-                // Reset retries and delay upon successful connection
-                retries = 0;
-                reconnectionDelay = INITIAL_DELAY_MS;
             };
 
             websocket.onerror = () => {
@@ -58,19 +49,6 @@ const useWebSocket = (url: string) => {
                 console.log('Disconnected from the WebSocket');
                 setIsConnected(false);
                 setConnecting(false);
-
-                // Reconnect if not closed intentionally and if under max retries
-                if (!event.wasClean && retries < MAX_RETRIES) {
-                    setTimeout(() => {
-                        if (!connecting) {
-                            console.log('Trying to reconnect to WebSocket...');
-                            retries++;
-                            reconnectionDelay *= 2; // double the delay for next retry
-                            setConnecting(true);    // Set to connecting state to prevent multiple connections
-                            connect();
-                        }
-                    }, reconnectionDelay);
-                }
             };
 
             setWs(websocket);
