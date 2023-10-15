@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Message } from '../types';
 
-const MAX_RETRIES = 5;
-const INITIAL_DELAY_MS = 1000; // start with 1 second delay
 let currentURL : string = '';
 
 const useWebSocket = (url: string) => {
@@ -37,6 +35,10 @@ const useWebSocket = (url: string) => {
                 switch (incomingMessage.event) {
                     case 'receive_message':
                         addMessage(incomingMessage.data);
+                        setIsUserTyping(false);
+                        break;
+                    case 'receive_image':
+                        addImage(incomingMessage.data);
                         setIsUserTyping(false);
                         break;
                     case 'receive_typing':
@@ -95,6 +97,11 @@ const useWebSocket = (url: string) => {
                 return [...prevMessages, newMessage];
             }
         });
+    };
+
+    const addImage = (newMessage: { author: string; image: string }) => {
+        newMessage.image = image;
+        return [...messages, newMessage];
     };
 
     return {

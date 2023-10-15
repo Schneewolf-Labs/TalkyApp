@@ -27,9 +27,10 @@ const MessageInput: React.FC<MessageInputProps> = ({ connected, onSend }) => {
     <div className="message-input-container">
       <IonInput
         value={input}
-        placeholder="Enter your message"
+        placeholder={connected ? "Enter your message" : "Disconnected..."}
         onIonChange={e => setInput(e.detail.value!)}
         onKeyDown={handleKeyDown}
+        autoFocus={true}
       />
       <IonButton disabled={!connected} expand="block" onClick={handleSendMessage}>Send</IonButton>
     </div>

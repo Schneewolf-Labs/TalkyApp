@@ -1,4 +1,14 @@
 .message-input-container {
   display: flex;
   gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid #e0e1e3;  /* Slight top border for separation */
+}
+
+/* Input styling */
+.message-input-container ion-input {
+  flex: 1;  /* Allow input to take remaining space */
+  border-radius: 5px;  /* Soften edges */
+  padding: 1rem !important;  /* Inner padding */
+  border: 1px solid #e0e1e3;  /* Light border around input */
 }

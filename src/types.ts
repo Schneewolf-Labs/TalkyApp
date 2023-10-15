@@ -1,6 +1,7 @@
 export type Message = {
     author: string;
     text: string;
+    image: string;
 };
 
 export type Setting = {

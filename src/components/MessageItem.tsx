@@ -11,7 +11,7 @@ const MessageItem = forwardRef<HTMLIonItemElement, MessageItemProps>((props, ref
   return (
     <IonItem ref={ref} className="message-item">
       <IonAvatar slot="start">
-        <img src="/path/to/default/avatar.png" alt="Avatar" />
+        <img src="/avatar.png" alt="Avatar" />
       </IonAvatar>
       <IonLabel>
         <h2>{props.message.author}</h2>
