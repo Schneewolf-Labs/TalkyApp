@@ -38,7 +38,7 @@ const useWebSocket = (url: string) => {
                         setIsUserTyping(false);
                         break;
                     case 'receive_image':
-                        addImage(incomingMessage.data);
+                        addImage(incomingMessage.data.data);
                         setIsUserTyping(false);
                         break;
                     case 'receive_typing':
@@ -99,9 +99,13 @@ const useWebSocket = (url: string) => {
         });
     };
 
-    const addImage = (newMessage: { author: string; image: string }) => {
-        newMessage.image = image;
-        return [...messages, newMessage];
+    const addImage = (image: string) => {
+        const newMessage = {
+            image: image,
+        };
+        setMessages(prevMessages => {
+            return [...prevMessages, newMessage];
+        });
     };
 
     return {
