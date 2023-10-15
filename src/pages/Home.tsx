@@ -9,8 +9,8 @@ import './styles/Home.css';
 
 const Home: React.FC = () => {
   const settings = useSettings(); 
-  const apiUrl = settings.find(setting => setting.name === 'apiUrl')?.value || 'ws://127.0.0.1:3000/api';
-  const username = settings.find(setting => setting.name === 'username')?.value || 'TalkyApp';
+  const apiUrl = settings.get('apiUrl').value;
+  const username = settings.get('username').value;
 
   const { isConnected, messages, sendMessage, isUserTyping } = useWebSocket(apiUrl);
 

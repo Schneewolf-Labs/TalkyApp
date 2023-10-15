@@ -40,6 +40,11 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     },
   ];
 
+  const get = (name: string) => {
+    return settings.find(setting => setting.name === name);
+  };
+  settings.get = get;
+
   return (
     <SettingsContext.Provider value={settings}>
       {children}
