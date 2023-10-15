@@ -17,10 +17,20 @@ const MessageInput: React.FC<MessageInputProps> = ({ connected, onSend }) => {
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKey = (event: React.KeyboardEvent) => {
+    // Capture and set the value on each keystroke since IonChange is evil
+    const inputElement = event.target as HTMLInputElement;
+    setInput(inputElement.value);
+
+    // send on enter stroke
     if (event.key === 'Enter') {
       handleSendMessage();
     }
+  };
+
+  const handleInputChange = (e: CustomEvent) => {
+    const value = e.detail.value!;
+    setInput(value);
   };
 
   return (
@@ -28,8 +38,8 @@ const MessageInput: React.FC<MessageInputProps> = ({ connected, onSend }) => {
       <IonInput
         value={input}
         placeholder={connected ? "Enter your message" : "Disconnected..."}
-        onIonChange={e => setInput(e.detail.value!)}
-        onKeyDown={handleKeyDown}
+        onIonChange={handleInputChange}
+        onKeyUp={handleKey}
         autoFocus={true}
       />
       <IonButton disabled={!connected} expand="block" onClick={handleSendMessage}>Send</IonButton>
