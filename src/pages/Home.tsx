@@ -46,10 +46,9 @@ const Home: React.FC = () => {
           {messages.map((message, idx) => (
             <MessageItem key={idx}
               message={message}
-              ref={idx === messages.length - 1 ? lastMessageRef : null}
             />
           ))}
-          <IonItem>
+          <IonItem ref={lastMessageRef}>
             {isConnected && isUserTyping && (
               <IonLabel>User is typing...</IonLabel>
             )}
