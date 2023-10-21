@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { IonItem, IonLabel, IonAvatar, IonImg } from '@ionic/react';
 import { Message } from '../types';
+import { useSettings } from '../context/SettingsContext';
 import './styles/MessageItem.css';
 
 type MessageItemProps = {
@@ -8,11 +9,15 @@ type MessageItemProps = {
 };
 
 const MessageItem = forwardRef<HTMLIonItemElement, MessageItemProps>((props, ref) => {
+  const avatarEnabled = useSettings().get('avatarEnabled').value;
   return (
     <IonItem ref={ref} className="message-item">
-      <IonAvatar slot="start">
-        <img src="/avatar.png" alt="Avatar" />
-      </IonAvatar>
+      {avatarEnabled && (
+        // If the avatar is enabled, render the avatar image
+        <IonAvatar slot="start">
+          <img src="/avatar.png" alt="Avatar" />
+        </IonAvatar>
+      )}
       <IonLabel>
         <h2>{props.message.author}</h2>
         {props.message.image ? (

@@ -20,7 +20,7 @@ const getFromLocalStorage = (key: string, defaultValue: any) => {
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) => {
   const [username, setUsername] = useState<string>(getFromLocalStorage('username', 'TalkyApp'));
   const [apiUrl, setApiUrl] = useState<string>(getFromLocalStorage('apiUrl', 'ws://127.0.0.1:3000/api'));
-  const [avatar, setAvatar] = useState<string>(getFromLocalStorage('avatar', 'default-avatar.png'));
+  const [avatarEnabled, setAvatarEnabled] = useState<boolean>(getFromLocalStorage('avatarEnabled', true));
 
   const settings = [
     { 
@@ -33,6 +33,11 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
       value: apiUrl, 
       setValue: (value: any) => { saveToLocalStorage('apiUrl', value); setApiUrl(value); } 
     },
+    {
+      name: 'avatarEnabled',
+      value: avatarEnabled,
+      setValue: (value: any) => { saveToLocalStorage('avatarEnabled', value); setAvatarEnabled(value); }
+    }
   ];
 
   const get = (name: string) => {
